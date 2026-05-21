@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#FAF8F3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Dental Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#FAF8F3; --cream-2:#F2EDE3; --cream-3:#E8E0D0;
+  --ink:#1C1917; --ink-2:#57534E; --ink-3:#A8A29E; --ink-4:#D6D0C8;
+  --teal:#2A7C6F; --teal-2:#3D9E8E; --teal-3:#EAF5F2; --teal-border:#B8DFDA;
+  --gold:#C4962A; --gold-2:#FDF6E7; --gold-border:#E8D5A3;
+  --purple:#5B4B8A; --purple-2:#F0EDF8; --purple-border:#D4C9EF;
+  --red:#C0443B; --red-2:#FDF0EF; --red-border:#F0CECE;
+  --blue:#2563A8; --blue-2:#EFF4FC; --blue-border:#BFCFE8;
+  --r:12px; --r-lg:18px; --r-xl:24px;
+  --xp-color:#7C3AED;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+.shell{max-width:430px;margin:0 auto;height:100vh;display:flex;flex-direction:column;background:var(--cream);position:relative;overflow:hidden}
+
+/* ── HEADER ── */
+.hdr{padding:14px 20px 0;flex-shrink:0}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.brand{font-family:'DM Serif Display',serif;font-size:20px;letter-spacing:-0.3px}
+.brand em{font-style:italic;color:var(--teal)}
+.hdr-chips{display:flex;gap:6px;align-items:center}
+.chip{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid}
+.chip-gold{background:var(--gold-2);border-color:var(--gold-border);color:var(--gold)}
+.chip-purple{background:var(--purple-2);border-color:var(--purple-border);color:var(--purple)}
+
+/* XP BAR */
+.xp-bar-wrap{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r);padding:10px 14px;margin-bottom:2px}
+.xp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.xp-level{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--xp-color)}
+.xp-label{font-size:11px;color:var(--ink-3)}
+.xp-next{font-size:11px;color:var(--ink-3)}
+.xp-track{height:8px;background:var(--cream-2);border-radius:4px;overflow:hidden;position:relative}
+.xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7C3AED,#A855F7);transition:width 0.8s cubic-bezier(.4,0,.2,1);position:relative}
+.xp-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4));border-radius:4px}
+.xp-season{font-size:10px;color:var(--ink-3);margin-top:4px;text-align:right}
+
+/* ── NAV ── */
+.nav{display:flex;border-bottom:1px solid var(--cream-3);flex-shrink:0}
+.nb{flex:1;background:none;border:none;padding:8px 4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:var(--ink-3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;transition:color 0.2s;letter-spacing:0.01em}
+.nb svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nb.on{color:var(--teal)}
+.nb.on::after{content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--teal);border-radius:2px 2px 0 0}
+.nb .badge-dot{position:absolute;top:6px;right:calc(50% - 12px);width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid var(--cream)}
+
+/* ── SCROLL AREA ── */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:16px 20px 24px}
+.scroll::-webkit-scrollbar{width:3px}
+.scroll::-webkit-scrollbar-thumb{background:var(--cream-3);border-radius:2px}
+
+/* ── PAGES ── */
+.pg{display:none}.pg.on{display:block;animation:fadeUp 0.22s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+.sc{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r);padding:8px 6px;text-align:center}
+.sc .v{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1}
+.sc .l{font-size:9px;color:var(--ink-3);margin-top:3px;line-height:1.3}
+
+/* ── MODE PILLS ── */
+.mode-row{display:flex;gap:4px;background:#fff;border:1px solid var(--cream-3);border-radius:50px;padding:3px;margin-bottom:14px}
+.mp{flex:1;padding:6px 8px;border-radius:50px;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:all 0.2s;text-align:center;line-height:1.3}
+.mp span{display:block;font-size:9px;font-weight:400;color:var(--ink-3)}
+.mp.on{background:var(--teal);color:#fff}
+.mp.on span{color:rgba(255,255,255,0.75)}
+
+/* ── TIMER ── */
+.timer-area{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:14px}
+.face-ring-row{display:flex;align-items:center;gap:16px}
+#face-svg{width:82px;height:82px}
+.ring-wrap{position:relative;width:148px;height:148px}
+#ring-svg{width:148px;height:148px;transform:rotate(-90deg)}
+#rt{fill:none;stroke:var(--cream-3);stroke-width:9}
+#rp{fill:none;stroke:var(--teal);stroke-width:9;stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:0;transition:stroke-dashoffset 0.6s cubic-bezier(.4,0,.2,1),stroke 0.4s}
+.ring-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rt-time{font-family:'DM Serif Display',serif;font-size:32px;color:var(--ink);letter-spacing:-1px;line-height:1}
+.rt-lbl{font-size:10px;color:var(--ink-3);margin-top:2px;text-transform:uppercase;letter-spacing:0.05em}
+
+.zdots{display:flex;gap:5px}
+.zd{height:5px;flex:1;min-width:24px;border-radius:3px;background:var(--cream-3);transition:all 0.3s}
+.zd.on{background:var(--teal-2)}
+.zd.done{background:var(--teal)}
+.zlabel{font-size:11px;color:var(--ink-2);font-weight:500;min-height:16px;text-align:center}
+
+.btn-row{display:flex;gap:8px}
+.btn{padding:11px 22px;border-radius:50px;border:1px solid var(--cream-3);background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;transition:all 0.18s}
+.btn:hover{background:var(--cream-2)}
+.btn:active{transform:scale(0.97)}
+.btn:disabled{opacity:0.4;cursor:default;transform:none}
+.btn.g{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.g:hover{background:var(--teal-2);border-color:var(--teal-2)}
+
+.streak-row{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-3)}
+.pips{display:flex;gap:3px}
+.pip{width:9px;height:9px;border-radius:50%;background:var(--cream-3);transition:background 0.4s}
+.pip.lit{background:var(--gold)}
+
+.tip-card{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-lg);padding:12px 14px;margin-top:4px}
+.tip-ey{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:4px}
+.tip-tx{font-size:12px;color:var(--ink-2);line-height:1.6}
+
+/* XP GAIN POPUP */
+.xp-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--xp-color);color:#fff;border-radius:20px;padding:6px 14px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;pointer-events:none;z-index:99;transition:all 0.3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+.xp-popup.show{transform:translate(-50%,-200%) scale(1)}
+
+/* REWARD CARD */
+.reward-card{background:var(--teal-3);border:1px solid var(--teal-border);border-radius:var(--r-xl);padding:18px;text-align:center;display:none;margin-top:10px;animation:popIn 0.35s cubic-bezier(.34,1.56,.64,1)}
+.reward-card.show{display:block}
+
+/* ── PHOTO SCAN OVERLAY ── */
+.scan-overlay{position:absolute;inset:0;background:var(--ink);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:0;overflow:hidden}
+.scan-overlay.show{display:flex;animation:fadeIn 0.25s ease}
+.scan-header{width:100%;padding:16px 20px 12px;display:flex;align-items:center;gap:12px;background:var(--ink);flex-shrink:0}
+.scan-header-title{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;flex:1}
+.scan-header-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px}
+.scan-step{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:var(--teal-2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px}
+
+.camera-area{width:100%;flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#camera-video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+#photo-canvas{display:none}
+.camera-guide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.guide-oval{width:72%;max-width:260px;aspect-ratio:1.2;border:2.5px solid rgba(255,255,255,0.6);border-radius:50%;position:relative}
+.guide-oval::before{content:'Zameraj pusu';position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:11px;color:rgba(255,255,255,0.7);white-space:nowrap;font-family:'DM Sans',sans-serif}
+.scan-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal-2),transparent);animation:scanMove 2s ease-in-out infinite}
+@keyframes scanMove{0%{top:0;opacity:1}50%{top:calc(100% - 2px)}100%{top:0;opacity:0.5}}
+.camera-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,0.5)}
+
+.camera-controls{width:100%;padding:20px 24px 24px;background:var(--ink);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.shutter-btn{width:64px;height:64px;border-radius:50%;background:#fff;border:4px solid rgba(255,255,255,0.3);cursor:pointer;transition:transform 0.1s;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.shutter-btn:active{transform:scale(0.93)}
+.cam-side-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.cam-side-btn:hover{background:rgba(255,255,255,0.18)}
+.cam-side-btn svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* preview state */
+.preview-wrap{width:100%;flex:1;position:relative;overflow:hidden}
+#preview-img{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.preview-badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(28,25,23,0.75);color:#fff;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:500;white-space:nowrap;backdrop-filter:blur(4px)}
+.preview-controls{width:100%;padding:16px 24px 24px;background:var(--ink);display:flex;gap:10px;flex-shrink:0}
+.preview-btn{flex:1;padding:12px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;text-align:center}
+.preview-btn.retake{background:rgba(255,255,255,0.1);color:#fff}
+.preview-btn.retake:hover{background:rgba(255,255,255,0.18)}
+.preview-btn.analyze{background:var(--teal);color:#fff}
+.preview-btn.analyze:hover{background:var(--teal-2)}
+
+/* analyzing state */
+.analyzing-wrap{width:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px}
+.ai-spinner{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--teal-2);animation:spin 0.9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.analyzing-title{font-family:'DM Serif Display',serif;font-size:18px;color:#fff}
+.analyzing-sub{font-size:12px;color:rgba(255,255,255,0.5);text-align:center}
+.analyzing-steps{display:flex;flex-direction:column;gap:6px;width:100%;max-width:260px;margin-top:4px}
+.ai-step{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);transition:color 0.4s}
+.ai-step.active{color:rgba(255,255,255,0.9)}
+.ai-step.done{color:var(--teal-2)}
+.ai-step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0;transition:background 0.4s}
+.ai-step.active .ai-step-dot{background:var(--teal-2);animation:pulse 1s infinite}
+.ai-step.done .ai-step-dot{background:var(--teal)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* result state */
+.result-wrap{width:100%;flex:1;overflow-y:auto;padding:16px 20px}
+.result-photo-thumb{width:100%;max-height:200px;object-fit:cover;border-radius:var(--r-lg);transform:scaleX(-1);margin-bottom:14px}
+.score-ring-wrap{display:flex;justify-content:center;margin-bottom:14px;position:relative}
+.score-ring-wrap svg{transform:rotate(-90deg)}
+.score-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700}
+.score-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em}
+.result-verdict{text-align:center;margin-bottom:12px}
+.verdict-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:4px}
+.verdict-sub{font-size:12px;color:var(--ink-2);line-height:1.6}
+.result-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px}
+.result-detail{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:10px}
+.rd-title{font-size:11px;font-weight:500;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+.rd-text{font-size:13px;color:var(--ink-2);line-height:1.7}
+.result-bottom{padding:0 20px 20px;background:var(--cream);flex-shrink:0}
+.result-cta{width:100%;padding:13px;border-radius:50px;background:var(--teal);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity 0.2s}
+.result-cta:hover{opacity:0.9}
+
+/* upload fallback */
+.upload-area{width:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center}
+.upload-icon{font-size:48px}
+.upload-title{font-family:'DM Serif Display',serif;font-size:18px;color:#fff}
+.upload-sub{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6}
+.upload-btn{padding:12px 28px;border-radius:50px;background:var(--teal);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer}
+#file-input{display:none}
+@keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+.r-em{font-size:32px;margin-bottom:6px}
+.r-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--teal);margin-bottom:3px}
+.r-sub{font-size:12px;color:var(--ink-2);margin-bottom:10px}
+.r-chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.r-chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500}
+.r-chip-xp{background:var(--xp-color);color:#fff}
+.r-chip-pts{background:var(--gold);color:#fff}
+
+/* LEVEL UP OVERLAY */
+.lvlup{position:absolute;inset:0;background:rgba(250,248,243,0.96);z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:32px;animation:fadeIn 0.3s ease}
+.lvlup.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lvlup-stars{font-size:36px;letter-spacing:4px;animation:starPulse 1s ease infinite}
+@keyframes starPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.lvlup-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--xp-color);letter-spacing:-0.5px}
+.lvlup-sub{font-size:14px;color:var(--ink-2)}
+.lvlup-badge{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:var(--xp-color);background:var(--purple-2);border:2px solid var(--purple-border);border-radius:var(--r-xl);padding:10px 28px;margin:4px 0}
+.lvlup-card-preview{width:120px;margin:0 auto}
+.lvlup-btn{padding:12px 32px;border-radius:50px;background:var(--xp-color);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:4px;transition:opacity 0.2s}
+.lvlup-btn:hover{opacity:0.9}
+
+/* ── CARDS PAGE ── */
+.season-banner{background:linear-gradient(135deg,#1a0533,#3b1278);border-radius:var(--r-xl);padding:16px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden}
+.season-banner::before{content:'✦ ✦ ✦';position:absolute;top:8px;right:12px;font-size:10px;opacity:0.3;letter-spacing:4px}
+.season-title{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:500;opacity:0.6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px}
+.season-name{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;margin-bottom:8px}
+.season-prog-track{height:6px;background:rgba(255,255,255,0.2);border-radius:3px;margin-bottom:4px}
+.season-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#A855F7,#EC4899);transition:width 0.8s ease}
+.season-info{display:flex;justify-content:space-between;font-size:10px;opacity:0.7}
+
+.cards-filter{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.cards-filter::-webkit-scrollbar{display:none}
+.cf{padding:5px 12px;border-radius:20px;border:1px solid var(--cream-3);background:#fff;font-size:11px;font-weight:500;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0}
+.cf.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+/* TRADING CARD */
+.tcard{border-radius:14px;aspect-ratio:2.5/3.5;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.2s;border:2px solid transparent}
+.tcard:hover{transform:scale(1.04)}
+.tcard:active{transform:scale(0.98)}
+.tcard.locked{filter:saturate(0.1) brightness(0.7)}
+.tcard.locked::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,0.3)}
+.tcard-bg{position:absolute;inset:0}
+.tcard-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 50%,rgba(255,255,255,0.08) 100%);pointer-events:none}
+.tcard-rarity{position:absolute;top:5px;right:5px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.05em}
+.tcard-char{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:32px;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.tcard-name{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);letter-spacing:0.05em;text-transform:uppercase;padding:0 4px}
+.tcard-lvl-req{position:absolute;top:5px;left:5px;font-size:8px;font-weight:700;padding:2px 5px;border-radius:8px;background:rgba(0,0,0,0.4);color:#fff;font-family:'Space Grotesk',sans-serif}
+
+/* CARD DETAIL OVERLAY */
+.card-detail{position:absolute;inset:0;background:rgba(28,25,23,0.85);z-index:150;display:none;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.2s ease}
+.card-detail.show{display:flex}
+.cd-inner{background:var(--cream);border-radius:var(--r-xl);width:100%;max-width:320px;overflow:hidden}
+.cd-top{padding:20px;text-align:center}
+.cd-card-big{width:140px;height:196px;border-radius:18px;margin:0 auto 14px;position:relative;overflow:hidden;border:3px solid transparent}
+.cd-name{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.cd-rarity-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px}
+.cd-desc{font-size:12px;color:var(--ink-2);line-height:1.6;text-align:left;padding:0 4px}
+.cd-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:14px;border-top:1px solid var(--cream-3)}
+.cd-stat{background:var(--cream-2);border-radius:var(--r);padding:8px;text-align:center}
+.cd-stat .sv{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--ink)}
+.cd-stat .sl{font-size:10px;color:var(--ink-3);margin-top:1px}
+.cd-close{width:100%;padding:12px;background:var(--ink);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity 0.2s}
+.cd-close:hover{opacity:0.85}
+
+/* ── ACHIEVEMENTS ── */
+.ach-section{margin-bottom:16px}
+.ach-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);margin-bottom:8px;padding-left:2px}
+.ach-grid{display:flex;flex-direction:column;gap:6px}
+.ach-item{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.ach-item.done{border-color:var(--gold-border);background:var(--gold-2)}
+.ach-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ach-info{flex:1;min-width:0}
+.ach-name{font-size:13px;font-weight:500;color:var(--ink)}
+.ach-desc{font-size:11px;color:var(--ink-3);margin-top:1px}
+.ach-prog-wrap{margin-top:5px;height:4px;background:var(--cream-2);border-radius:2px;overflow:hidden}
+.ach-prog{height:100%;background:var(--gold);border-radius:2px;transition:width 0.6s ease}
+.ach-reward{font-size:10px;font-weight:500;color:var(--gold);white-space:nowrap}
+
+/* ── WEEKLY CHALLENGE ── */
+.challenge-card{background:linear-gradient(135deg,#0F4C3A,#1D7A5F);border-radius:var(--r-xl);padding:16px;margin-bottom:14px;color:#fff}
+.ch-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;opacity:0.6;margin-bottom:4px;font-family:'Space Grotesk',sans-serif}
+.ch-title{font-family:'DM Serif Display',serif;font-size:17px;margin-bottom:10px}
+.ch-prog-track{height:7px;background:rgba(255,255,255,0.2);border-radius:4px;margin-bottom:6px}
+.ch-prog-fill{height:100%;border-radius:4px;background:#4ADE80;transition:width 0.6s ease}
+.ch-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;opacity:0.8}
+.ch-reward{background:rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:500}
+
+/* ── JOURNAL / DIARY ── */
+.journal-entry-form{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-lg);padding:14px;margin-bottom:12px}
+.je-date{font-size:11px;color:var(--ink-3);margin-bottom:8px}
+.je-icons{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.je-icon-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--cream-3);background:var(--cream);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.je-icon-btn.sel{border-color:var(--teal);background:var(--teal-3)}
+.je-input{width:100%;border:1px solid var(--cream-3);border-radius:var(--r);padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);background:var(--cream);resize:none;outline:none;min-height:60px}
+.je-input:focus{border-color:var(--teal)}
+.je-save-btn{margin-top:8px;padding:8px 18px;border-radius:20px;background:var(--teal);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+
+.je-list{display:flex;flex-direction:column;gap:6px}
+.je-item{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r);padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.je-item-icons{font-size:14px;letter-spacing:1px;flex-shrink:0}
+.je-item-info .date{font-size:10px;color:var(--ink-3);margin-bottom:2px}
+.je-item-info .text{font-size:12px;color:var(--ink-2);line-height:1.5}
+
+/* ── HISTORY / HEATMAP ── */
+.heatmap-wrap{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-xl);padding:14px;margin-bottom:12px}
+.hm-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px}
+.hm-grid{display:grid;grid-template-columns:repeat(26,1fr);gap:2px}
+.hm-cell{aspect-ratio:1;border-radius:2px;background:var(--cream-2);transition:background 0.3s}
+.hm-cell.l1{background:#B8DFDA}
+.hm-cell.l2{background:#5DCAA5}
+.hm-cell.l3{background:#2A7C6F}
+.hm-cell.l4{background:#085041}
+
+.cal-wrap{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-xl);padding:14px;margin-bottom:12px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-month{font-family:'DM Serif Display',serif;font-size:15px;color:var(--ink)}
+.cnb{width:26px;height:26px;border-radius:50%;border:1px solid var(--cream-3);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.cnb:hover{background:var(--cream-2)}
+.cnb svg{width:12px;height:12px;stroke:var(--ink-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:3px}
+.cdn{text-align:center;font-size:9px;color:var(--ink-3);font-weight:500;text-transform:uppercase;letter-spacing:0.04em;padding:2px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cc{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-3);background:var(--cream);transition:all 0.2s}
+.cc.b{background:var(--teal-3);color:var(--teal);font-weight:500}
+.cc.b.f{background:var(--purple-2);color:var(--purple)}
+.cc.today{box-shadow:0 0 0 1.5px var(--teal)}
+.cc.empty{background:none}
+
+/* ── FLOSS ── */
+.floss-hero{background:var(--purple-2);border:1px solid var(--purple-border);border-radius:var(--r-xl);padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.floss-ico{width:48px;height:48px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.floss-hero-t .title{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:2px}
+.floss-hero-t .sub{font-size:11px;color:var(--ink-2)}
+.floss-cta{width:100%;padding:12px;border-radius:50px;border:none;background:var(--purple);color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity 0.2s;margin-bottom:12px}
+.floss-cta:hover{opacity:0.9}
+.floss-cta.done{background:var(--teal)}
+
+.sec-title{font-family:'DM Serif Display',serif;font-size:17px;margin-bottom:12px}
+
+.info-card{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-lg);overflow:hidden;margin-bottom:8px}
+.ic-head{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s}
+.ic-head:hover{background:var(--cream-2)}
+.ic-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ic-lbl{font-size:13px;font-weight:500;color:var(--ink);flex:1}
+.ic-arr{width:14px;height:14px;stroke:var(--ink-3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s}
+.info-card.open .ic-arr{transform:rotate(90deg)}
+.ic-body{display:none;padding:0 14px 12px;border-top:1px solid var(--cream-3);padding-top:10px;font-size:12px;color:var(--ink-2);line-height:1.7}
+.info-card.open .ic-body{display:block}
+.steps{display:flex;flex-direction:column;gap:7px}
+.step{display:flex;gap:8px;align-items:flex-start}
+.sn{width:20px;height:20px;border-radius:50%;background:var(--purple-2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--purple);flex-shrink:0}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.bt{background:var(--teal-3);color:var(--teal)}
+.bg{background:var(--gold-2);color:var(--gold)}
+.br{background:var(--red-2);color:var(--red)}
+.bp{background:var(--purple-2);color:var(--purple)}
+
+/* ── SETTINGS ── */
+.sett-section{margin-bottom:16px}
+.sett-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);margin-bottom:7px;padding-left:2px}
+.sett-card{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-lg);overflow:hidden}
+.sr{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid var(--cream-3);gap:10px}
+.sr:last-child{border-bottom:none}
+.sr-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sr-info{flex:1}
+.sr-info .n{font-size:13px;font-weight:500;color:var(--ink)}
+.sr-info .d{font-size:10px;color:var(--ink-3);margin-top:1px}
+.sr-right{display:flex;align-items:center;gap:7px}
+input[type=time]{border:1px solid var(--cream-3);border-radius:8px;padding:3px 7px;font-size:11px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none;width:74px}
+input[type=time]:focus{border-color:var(--teal)}
+.toggle{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--cream-3);border-radius:20px;transition:background 0.2s}
+.tsl::before{content:'';position:absolute;width:14px;height:14px;top:3px;left:3px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 2px rgba(0,0,0,0.15)}
+input:checked+.tsl{background:var(--teal)}
+input:checked+.tsl::before{transform:translateX(16px)}
+
+.danger-btn{width:100%;padding:11px;border-radius:var(--r);border:1px solid var(--red-border);background:var(--red-2);color:var(--red);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:opacity 0.2s}
+.danger-btn:hover{opacity:0.85}
+
+/* ── PROFILE / REPORT ── */
+.profile-hero{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-xl);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.avatar-wrap{position:relative;flex-shrink:0}
+.avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid var(--purple-border);background:var(--purple-2)}
+.avatar-level{position:absolute;bottom:-4px;right:-4px;background:var(--xp-color);color:#fff;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;padding:1px 5px;border:2px solid var(--cream)}
+.profile-info .name{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--ink)}
+.profile-info .title-badge{display:inline-block;margin-top:3px;padding:2px 8px;border-radius:20px;background:var(--purple-2);color:var(--purple);font-size:10px;font-weight:500}
+.profile-info .joined{font-size:10px;color:var(--ink-3);margin-top:4px}
+
+.weekly-report{background:#fff;border:1px solid var(--cream-3);border-radius:var(--r-xl);padding:14px;margin-bottom:12px}
+.wr-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.wr-week{display:flex;gap:3px}
+.wr-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.wr-day-lbl{font-size:9px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.04em}
+.wr-day-dot{width:26px;height:26px;border-radius:50%;background:var(--cream-2);display:flex;align-items:center;justify-content:center;font-size:10px}
+.wr-day-dot.done{background:var(--teal-3);color:var(--teal)}
+.wr-day-dot.done.floss{background:var(--purple-2);color:var(--purple)}
+.wr-day-dot.today{box-shadow:0 0 0 1.5px var(--teal)}
+
+.notif-info{margin-top:8px;padding:8px 12px;background:var(--cream-2);border-radius:var(--r);font-size:10px;color:var(--ink-2);line-height:1.6}
+
+/* Sound bars */
+@keyframes sw{0%,100%{height:3px}50%{height:11px}}
+.sbars{display:flex;gap:2px;align-items:center;height:14px}
+.sb{width:3px;border-radius:2px;background:var(--teal);height:3px}
+.sb.p{animation:sw 0.55s ease-in-out infinite}
+.sb:nth-child(2){animation-delay:.1s}.sb:nth-child(3){animation-delay:.2s}
+
+/* Pulse */
+@keyframes pr{0%,100%{transform:rotate(-90deg) scale(1)}50%{transform:rotate(-90deg) scale(1.015)}}
+.pulsing #ring-svg{animation:pr 2s ease-in-out infinite}
+</style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dental Pro">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+</head>
+<body>
+<div class="shell" id="shell">
+
+<!-- XP POPUP -->
+<div class="xp-popup" id="xp-popup">+0 XP</div>
+
+<!-- ═══ PHOTO SCAN OVERLAY ═══ -->
+<div class="scan-overlay" id="scan-overlay">
+
+  <!-- CAMERA STATE -->
+  <div id="scan-camera-state" style="width:100%;height:100%;display:flex;flex-direction:column">
+    <div class="scan-header">
+      <div>
+        <div class="scan-step">Krok 1 / 2</div>
+        <div class="scan-header-title">Odfot si pusu</div>
+        <div class="scan-header-sub">Ukáž zuby — AI zhodnotí čistotu</div>
+      </div>
+
+    </div>
+    <div class="camera-area" id="camera-area">
+      <video id="camera-video" autoplay playsinline muted></video>
+      <canvas id="photo-canvas"></canvas>
+      <div class="camera-guide">
+        <div class="guide-oval"><div class="scan-line"></div></div>
+      </div>
+      <div class="camera-hint">Drž telefón 20–30 cm od puse</div>
+    </div>
+    <div class="camera-controls">
+      <button class="cam-side-btn" onclick="switchCamera()" title="Prepnúť kameru">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      </button>
+      <button class="shutter-btn" onclick="takePhoto()" id="shutter-btn">📸</button>
+      <button class="cam-side-btn" onclick="openFileUpload()" title="Nahrať z galérie">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+      </button>
+    </div>
+    <input type="file" id="file-input" accept="image/*" onchange="handleFileUpload(event)">
+  </div>
+
+  <!-- PREVIEW STATE -->
+  <div id="scan-preview-state" style="width:100%;height:100%;display:none;flex-direction:column">
+    <div class="scan-header">
+      <div>
+        <div class="scan-step">Krok 1 / 2</div>
+        <div class="scan-header-title">Vyzerá dobre?</div>
+        <div class="scan-header-sub">Skontroluj fotku pred analýzou</div>
+      </div>
+    </div>
+    <div class="preview-wrap">
+      <img id="preview-img" src="" alt="preview">
+      <div class="preview-badge">🦷 Fotka zachytená</div>
+    </div>
+    <div class="preview-controls">
+      <button class="preview-btn retake" onclick="retakePhoto()">↩ Znova odfotiť</button>
+      <button class="preview-btn analyze" onclick="analyzePhoto()">AI analýza →</button>
+    </div>
+  </div>
+
+  <!-- ANALYZING STATE -->
+  <div id="scan-analyzing-state" style="width:100%;height:100%;display:none;flex-direction:column;background:var(--ink)">
+    <div class="scan-header">
+      <div>
+        <div class="scan-step">Krok 2 / 2</div>
+        <div class="scan-header-title">Analyzujem...</div>
+      </div>
+    </div>
+    <div class="analyzing-wrap">
+      <div class="ai-spinner"></div>
+      <div class="analyzing-title">Claude posudzuje</div>
+      <div class="analyzing-sub">Skenujem čistotu zubov,<br>farbu a ďasná</div>
+      <div class="analyzing-steps">
+        <div class="ai-step" id="ai-s1"><div class="ai-step-dot"></div>Detekcia zubov</div>
+        <div class="ai-step" id="ai-s2"><div class="ai-step-dot"></div>Analýza čistoty</div>
+        <div class="ai-step" id="ai-s3"><div class="ai-step-dot"></div>Hodnotenie farby</div>
+        <div class="ai-step" id="ai-s4"><div class="ai-step-dot"></div>Generovanie rady</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT STATE -->
+  <div id="scan-result-state" style="width:100%;height:100%;display:none;flex-direction:column;background:var(--cream)">
+    <div class="scan-header" style="background:var(--cream);border-bottom:1px solid var(--cream-3)">
+      <div>
+        <div class="scan-step" style="color:var(--teal)">Výsledok analýzy</div>
+        <div class="scan-header-title" style="color:var(--ink)">Hodnotenie puse</div>
+      </div>
+    </div>
+    <div class="result-wrap">
+      <img id="result-photo" src="" alt="scan" class="result-photo-thumb">
+      <div class="score-ring-wrap">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="46" fill="none" stroke="var(--cream-2)" stroke-width="10"/>
+          <circle id="score-arc" cx="55" cy="55" r="46" fill="none" stroke="#2A7C6F" stroke-width="10" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),stroke 0.5s"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-num" id="score-num" style="color:var(--teal)">—</div>
+          <div class="score-lbl">skóre</div>
+        </div>
+      </div>
+      <div class="result-verdict">
+        <div class="verdict-title" id="verdict-title"></div>
+        <div class="verdict-sub" id="verdict-sub"></div>
+      </div>
+      <div class="result-tags" id="result-tags"></div>
+      <div class="result-detail" style="border-left:3px solid #2A7C6F;border-radius:0 var(--r-lg) var(--r-lg) 0">
+        <div class="rd-title">✓ Pozitíva</div>
+        <div class="rd-text" id="rd-pos"></div>
+      </div>
+      <div class="result-detail" style="border-left:3px solid #C4962A;border-radius:0 var(--r-lg) var(--r-lg) 0">
+        <div class="rd-title">⚡ Na zlepšenie</div>
+        <div class="rd-text" id="rd-neg"></div>
+      </div>
+      <div class="result-detail" style="border-left:3px solid #5B4B8A;border-radius:0 var(--r-lg) var(--r-lg) 0">
+        <div class="rd-title">💡 Rada od AI</div>
+        <div class="rd-text" id="rd-tip"></div>
+      </div>
+    </div>
+    <div class="result-bottom">
+      <button class="result-cta" onclick="finishWithScan()">Pokračovať a získať odmenu 🏆</button>
+    </div>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div id="scan-error-state" style="width:100%;height:100%;display:none;flex-direction:column;background:var(--ink)">
+    <div class="scan-header">
+      <div><div class="scan-header-title">Problém s analýzou</div></div>
+    </div>
+    <div class="upload-area">
+      <div class="upload-icon">😔</div>
+      <div class="upload-title" style="color:#fff">Niečo sa nepodarilo</div>
+      <div class="upload-sub" id="scan-error-msg">Skús znova alebo preskočiť.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="upload-btn" style="background:rgba(255,255,255,0.15);color:#fff" onclick="retakePhoto()">Skúsiť znova</button>
+        <button class="upload-btn" onclick="skipScan()">Preskočiť</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LEVEL UP OVERLAY -->
+<div class="lvlup" id="lvlup">
+  <div class="lvlup-stars">★ ★ ★</div>
+  <div class="lvlup-title">Level Up!</div>
+  <div class="lvlup-badge" id="lvlup-num">2</div>
+  <div class="lvlup-sub" id="lvlup-title-txt">Zubný Padawan</div>
+  <div class="lvlup-card-preview" id="lvlup-card-preview"></div>
+  <div style="font-size:12px;color:var(--ink-2)" id="lvlup-reward-txt">Nová kartička odomknutá!</div>
+  <button class="lvlup-btn" onclick="closeLvlUp()">Pokračovať ✦</button>
+</div>
+
+<!-- CARD DETAIL -->
+<div class="card-detail" id="card-detail" onclick="closeCardDetail(event)">
+  <div class="cd-inner">
+    <div class="cd-top">
+      <div class="cd-card-big" id="cd-card-big"></div>
+      <div class="cd-name" id="cd-name"></div>
+      <div class="cd-rarity-row" id="cd-rarity-row"></div>
+      <div class="cd-desc" id="cd-desc"></div>
+    </div>
+    <div class="cd-stats" id="cd-stats"></div>
+    <button class="cd-close" onclick="closeCardDetail()">Zavrieť</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="brand">Den<em>tal</em> <span style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;background:var(--xp-color);color:#fff;padding:2px 7px;border-radius:20px;vertical-align:2px">PRO</span></div>
+    <div class="hdr-chips">
+      <div class="chip chip-gold"><span>★</span><span id="hdr-pts">0</span></div>
+      <div class="chip chip-purple"><span>⚡</span><span id="hdr-xp">0 XP</span></div>
+    </div>
+  </div>
+  <div class="xp-bar-wrap">
+    <div class="xp-top">
+      <div class="xp-level" id="xp-level-lbl">Úroveň 1 · Zubný Nováčik</div>
+      <div class="xp-next" id="xp-next-lbl">0 / 100 XP</div>
+    </div>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    <div class="xp-season" id="xp-season-lbl">Sezóna 1 · Zima čistoty</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nb on" onclick="showPg('timer',this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>Čistenie
+  </button>
+  <button class="nb" onclick="showPg('cards',this)">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Kartičky
+    <span class="badge-dot" id="cards-dot" style="display:none"></span>
+  </button>
+  <button class="nb" onclick="showPg('ach',this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Odznaky
+  </button>
+  <button class="nb" onclick="showPg('history',this)">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>História
+  </button>
+  <button class="nb" onclick="showPg('more',this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>Viac
+  </button>
+</nav>
+
+<div class="scroll">
+
+<!-- ═══ TIMER ═══ -->
+<div id="pg-timer" class="pg on">
+  <div class="stats-row">
+    <div class="sc"><div class="v" id="st-pts">0</div><div class="l">Body</div></div>
+    <div class="sc"><div class="v" id="st-str">0</div><div class="l">Séria dní</div></div>
+    <div class="sc"><div class="v" id="st-wk">0</div><div class="l">Týždeň</div></div>
+    <div class="sc"><div class="v" id="st-fstr">0</div><div class="l">Medzizubná</div></div>
+  </div>
+
+  <div class="mode-row">
+    <button class="mp" id="mp0" onclick="setMode(0)">Rýchly<span>1 min</span></button>
+    <button class="mp on" id="mp1" onclick="setMode(1)">Štandard<span>2 min</span></button>
+    <button class="mp" id="mp2" onclick="setMode(2)">Deep clean<span>3 min</span></button>
+  </div>
+
+  <div class="timer-area">
+    <div class="face-ring-row">
+      <svg id="face-svg" viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="41" cy="41" r="36" fill="#FEF9F0" stroke="#E8D5A3" stroke-width="1.5"/>
+        <ellipse cx="28" cy="33" rx="4" ry="5" fill="#57534E"/>
+        <ellipse cx="54" cy="33" rx="4" ry="5" fill="#57534E"/>
+        <ellipse cx="28" cy="31.5" rx="1.6" ry="2" fill="white"/>
+        <ellipse cx="54" cy="31.5" rx="1.6" ry="2" fill="white"/>
+        <path id="fmouth" d="M 27 52 Q 41 62 55 52" fill="none" stroke="#57534E" stroke-width="2" stroke-linecap="round"/>
+        <g id="fbrush" opacity="0">
+          <rect x="50" y="45" width="20" height="6.5" rx="2" fill="#2A7C6F"/>
+          <rect x="50" y="43" width="3" height="3" rx="0.8" fill="white" opacity="0.8"/>
+          <rect x="54" y="43" width="3" height="3" rx="0.8" fill="white" opacity="0.8"/>
+          <rect x="58" y="43" width="3" height="3" rx="0.8" fill="white" opacity="0.8"/>
+          <rect x="69.5" y="47" width="12" height="2.8" rx="1.4" fill="#C4962A"/>
+        </g>
+      </svg>
+      <div class="ring-wrap" id="ring-wrap">
+        <svg id="ring-svg" viewBox="0 0 148 148">
+          <circle id="rt" cx="74" cy="74" r="65"/>
+          <circle id="rp" cx="74" cy="74" r="65"/>
+        </svg>
+        <div class="ring-in">
+          <div class="rt-time" id="rt-time">2:00</div>
+          <div class="rt-lbl" id="rt-lbl">Štandard</div>
+        </div>
+      </div>
+    </div>
+    <div class="zdots" id="zdots"></div>
+    <div class="zlabel" id="zlabel">Stlač Začať</div>
+    <div class="btn-row">
+      <button class="btn g" id="main-btn" onclick="handleMain()">Začať</button>
+      <button class="btn" id="rst-btn" onclick="handleReset()" style="display:none">Reštart</button>
+    </div>
+    <div class="streak-row">
+      <span>Séria:</span>
+      <div class="pips" id="pips"></div>
+      <div class="sbars" id="sbars"><div class="sb"></div><div class="sb"></div><div class="sb"></div></div>
+    </div>
+  </div>
+
+  <div class="tip-card" id="tip-card" style="display:none">
+    <div class="tip-ey">💡 Tip dňa</div>
+    <div class="tip-tx" id="tip-tx"></div>
+  </div>
+
+  <div class="reward-card" id="reward-card">
+    <div class="r-em" id="r-em"></div>
+    <div class="r-title" id="r-title"></div>
+    <div class="r-sub" id="r-sub"></div>
+    <div class="r-chips">
+      <div class="r-chip r-chip-xp" id="r-xp"></div>
+      <div class="r-chip r-chip-pts" id="r-pts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CARDS ═══ -->
+<div id="pg-cards" class="pg">
+  <div class="season-banner">
+    <div class="season-title">Aktuálna sezóna</div>
+    <div class="season-name">Zima čistoty</div>
+    <div class="season-prog-track"><div class="season-prog-fill" id="season-fill" style="width:0%"></div></div>
+    <div class="season-info"><span id="season-lvl-txt">Sezónna úroveň 1</span><span id="season-end">Ešte 89 dní</span></div>
+  </div>
+
+  <div class="cards-filter" id="cards-filter">
+    <button class="cf on" onclick="filterCards('all',this)">Všetky</button>
+    <button class="cf" onclick="filterCards('common',this)">Common</button>
+    <button class="cf" onclick="filterCards('rare',this)">Rare</button>
+    <button class="cf" onclick="filterCards('epic',this)">Epic</button>
+    <button class="cf" onclick="filterCards('legendary',this)">Legendary</button>
+    <button class="cf" onclick="filterCards('unlocked',this)">Odomknuté</button>
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+</div>
+
+<!-- ═══ ACHIEVEMENTS ═══ -->
+<div id="pg-ach" class="pg">
+  <div class="challenge-card" id="challenge-card">
+    <div class="ch-tag">⚡ Týždenná výzva</div>
+    <div class="ch-title" id="ch-title">Vyčisti 5× tento týždeň</div>
+    <div class="ch-prog-track"><div class="ch-prog-fill" id="ch-fill" style="width:0%"></div></div>
+    <div class="ch-bottom">
+      <span id="ch-prog-txt">0 / 5</span>
+      <span class="ch-reward" id="ch-reward">+200 XP ★ 50</span>
+    </div>
+  </div>
+
+  <div class="ach-section" id="ach-section-active">
+    <div class="ach-label">V progrese</div>
+    <div class="ach-grid" id="ach-active"></div>
+  </div>
+  <div class="ach-section" id="ach-section-done">
+    <div class="ach-label">Splnené</div>
+    <div class="ach-grid" id="ach-done"></div>
+  </div>
+</div>
+
+<!-- ═══ HISTORY ═══ -->
+<div id="pg-history" class="pg">
+  <div class="stats-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px">
+    <div class="sc"><div class="v" id="h-total">0</div><div class="l">Celkom</div></div>
+    <div class="sc"><div class="v" id="h-month">0</div><div class="l">Tento mesiac</div></div>
+    <div class="sc"><div class="v" id="h-frate">0%</div><div class="l">s medzizubnou</div></div>
+  </div>
+
+  <div class="heatmap-wrap">
+    <div class="hm-title">Posledných 26 týždňov</div>
+    <div class="hm-grid" id="hm-grid"></div>
+  </div>
+
+  <div class="cal-wrap">
+    <div class="cal-nav">
+      <button class="cnb" onclick="calPrev()"><svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg></button>
+      <div class="cal-month" id="cal-month"></div>
+      <button class="cnb" onclick="calNext()"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></button>
+    </div>
+    <div class="cal-header" id="cal-header"></div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-2)"><div style="width:11px;height:11px;border-radius:3px;background:var(--teal-3);border:1px solid var(--teal-border)"></div>Čistenie</div>
+    <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-2)"><div style="width:11px;height:11px;border-radius:3px;background:var(--purple-2);border:1px solid var(--purple-border)"></div>+ Medzizubná</div>
+  </div>
+</div>
+
+<!-- ═══ MORE ═══ -->
+<div id="pg-more" class="pg">
+
+  <!-- Profile -->
+  <div class="profile-hero">
+    <div class="avatar-wrap">
+      <div class="avatar" id="profile-avatar">🦷</div>
+      <div class="avatar-level" id="profile-lvl">1</div>
+    </div>
+    <div class="profile-info">
+      <div class="name" id="profile-name">Zubný Nováčik</div>
+      <div class="title-badge" id="profile-title">Začiatočník</div>
+      <div class="joined">Čistení celkom: <b id="profile-total">0</b></div>
+    </div>
+  </div>
+
+  <!-- Weekly report -->
+  <div class="weekly-report">
+    <div class="wr-title">
+      <span>Tento týždeň</span>
+      <span style="font-size:11px;color:var(--ink-3)" id="wr-summary"></span>
+    </div>
+    <div class="wr-week" id="wr-week"></div>
+  </div>
+
+  <!-- Floss section -->
+  <div class="sec-title">Medzizubná kefka</div>
+  <div class="floss-hero">
+    <div class="floss-ico" id="floss-hero-icon">🪥</div>
+    <div class="floss-hero-t">
+      <div class="title">Dnes večer</div>
+      <div class="sub" id="floss-sub">Ešte neurobená</div>
+    </div>
+  </div>
+  <div style="background:var(--purple-2);border:1px solid var(--purple-border);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--purple);line-height:1.6">
+    🔒 Označuje sa automaticky — AI ťa opýta po večernom čistení zubov.
+  </div>
+  <div style="display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap">
+    <span class="badge bp" id="floss-streak-b">Séria: 0 dní</span>
+    <span class="badge bt" id="floss-total-b">Celkom: 0×</span>
+  </div>
+
+  <div class="info-card" id="ic1">
+    <div class="ic-head" onclick="toggleIC('ic1')">
+      <div class="ic-ico" style="background:#E1F5EE">📋</div>
+      <span class="ic-lbl">Ako správne používať medzizubnú kefku</span>
+      <svg class="ic-arr" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+    </div>
+    <div class="ic-body">
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><span>Vyber správnu veľkosť — medzera vyplnená, nie silný tlak.</span></div>
+        <div class="step"><div class="sn">2</div><span>Zaveď kefku jemným pohybom — nikdy silou.</span></div>
+        <div class="step"><div class="sn">3</div><span>Pohybuj 2–3× tam a späť, jemne a dôkladne.</span></div>
+        <div class="step"><div class="sn">4</div><span>Prejdi všetky medzery vrátane zadných stoličiek.</span></div>
+        <div class="step"><div class="sn">5</div><span>Opláchnuť vodou — hotovo!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card" id="ic2">
+    <div class="ic-head" onclick="toggleIC('ic2')">
+      <div class="ic-ico" style="background:#FDF6E7">🔄</div>
+      <span class="ic-lbl">Kedy vymeniť kefku?</span>
+      <svg class="ic-arr" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+    </div>
+    <div class="ic-body">
+      <div class="badges">
+        <span class="badge bt">Po 1–3 mesiacoch</span>
+        <span class="badge bg">Ohnuté vlákna → vymeniť</span>
+        <span class="badge br">Krvácanie → zubár</span>
+        <span class="badge bp">Správna veľkosť = bez bolesti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal -->
+  <div class="sec-title" style="margin-top:16px">Denník</div>
+  <div class="journal-entry-form">
+    <div class="je-date" id="je-date"></div>
+    <div class="je-icons" id="je-icons"></div>
+    <textarea class="je-input" id="je-input" placeholder="Poznámka (napr. citlivý zub vpravo dole...)"></textarea>
+    <button class="je-save-btn" onclick="saveJournalEntry()">Uložiť záznam</button>
+  </div>
+  <div class="je-list" id="je-list"></div>
+
+  <!-- Settings -->
+  <div class="sec-title" style="margin-top:16px">Nastavenia</div>
+  <div class="sett-section">
+    <div class="sett-lbl">Pripomienky</div>
+    <div class="sett-card">
+      <div class="sr">
+        <div class="sr-ico" style="background:#FDF6E7">🌅</div>
+        <div class="sr-info"><div class="n">Ranné čistenie</div><div class="d" id="d-morn">06:30</div></div>
+        <div class="sr-right">
+          <input type="time" id="t-morn" value="06:30" onchange="saveSettings()">
+          <label class="toggle"><input type="checkbox" id="tog-morn" checked onchange="saveSettings()"><span class="tsl"></span></label>
+        </div>
+      </div>
+      <div class="sr">
+        <div class="sr-ico" style="background:#EAF5F2">🌙</div>
+        <div class="sr-info"><div class="n">Večerné čistenie</div><div class="d" id="d-eve">21:00</div></div>
+        <div class="sr-right">
+          <input type="time" id="t-eve" value="21:00" onchange="saveSettings()">
+          <label class="toggle"><input type="checkbox" id="tog-eve" checked onchange="saveSettings()"><span class="tsl"></span></label>
+        </div>
+      </div>
+      <div class="sr">
+        <div class="sr-ico" style="background:#F0EDF8">🪥</div>
+        <div class="sr-info"><div class="n">Medzizubná kefka</div><div class="d" id="d-floss">20:30</div></div>
+        <div class="sr-right">
+          <input type="time" id="t-floss" value="20:30" onchange="saveSettings()">
+          <label class="toggle"><input type="checkbox" id="tog-floss" checked onchange="saveSettings()"><span class="tsl"></span></label>
+        </div>
+      </div>
+      <div class="sr">
+        <div class="sr-ico" style="background:#EFF4FC">🦷</div>
+        <div class="sr-info"><div class="n">Zubár</div><div class="d" id="d-dentist">Každých 6 mesiacov</div></div>
+        <div class="sr-right">
+          <input type="date" id="t-dentist" style="border:1px solid var(--cream-3);border-radius:8px;padding:3px 7px;font-size:10px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none;width:105px" onchange="saveSettings()">
+        </div>
+      </div>
+    </div>
+    <div class="notif-info">ℹ️ Notifikácie fungujú cez prehliadač. Prvýkrát požiada o povolenie.</div>
+  </div>
+  <div class="sett-section">
+    <div class="sett-lbl">Zvuk & Obraz</div>
+    <div class="sett-card">
+      <div class="sr">
+        <div class="sr-ico" style="background:#EAF5F2">🔔</div>
+        <div class="sr-info"><div class="n">Zvuk pri zmene zóny</div><div class="d">Pípnutie každých 30s</div></div>
+        <label class="toggle"><input type="checkbox" id="tog-sound" checked onchange="saveSettings()"><span class="tsl"></span></label>
+      </div>
+      <div class="sr">
+        <div class="sr-ico" style="background:#FDF6E7">💡</div>
+        <div class="sr-info"><div class="n">Denné tipy</div><div class="d">Tipy pre zdravie zubov</div></div>
+        <label class="toggle"><input type="checkbox" id="tog-tips" checked onchange="saveSettings()"><span class="tsl"></span></label>
+      </div>
+      <div class="sr">
+        <div class="sr-ico" style="background:#F0EDF8">📳</div>
+        <div class="sr-info"><div class="n">Vibrácie (mobile)</div><div class="d">Pri zmene zóny</div></div>
+        <label class="toggle"><input type="checkbox" id="tog-vib" checked onchange="saveSettings()"><span class="tsl"></span></label>
+      </div>
+    </div>
+  </div>
+  <div class="sett-section">
+    <div class="sett-lbl">Dáta</div>
+    <button class="danger-btn" onclick="resetAll()">🗑 Vymazať všetky dáta</button>
+  </div>
+  <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:var(--ink-3)">Dental Pro v2.0 · Vyrobené s ❤️</div>
+</div>
+
+</div><!-- /scroll -->
+</div><!-- /shell -->
+
+<script>
+// ═══════════ DATA ═══════════
+const MODES=[
+  {label:'Rýchly',secs:60,zones:['Celý úsmev'],xp:15,pts:5},
+  {label:'Štandard',secs:120,zones:['Vľavo hore','Vpravo hore','Vľavo dole','Vpravo dole'],xp:30,pts:10},
+  {label:'Deep clean',secs:180,zones:['Vľavo hore','Vpravo hore','Vľavo dole','Vpravo dole','Jazyk & ďasná'],xp:50,pts:15}
+];
+const TIPS=['Drž kefku pod uhlom 45° k ďasnám.','Jemné kruhovité pohyby > silné trenie.','Vymeň kefku každé 3 mesiace.','Čistenie 2× denne znižuje riziko kazu o 60%.','Po čistení neplachti — fluorid potrebuje čas.','Jazyk čistiť každý deň.','Medzizubná kefka zasiahne 40% povrchu navyše.','Pij vodu po jedle — zmýva cukor.','Zubár každých 6 mesiacov.','Kyslé nápoje — počkaj 30 min pred čistením.'];
+const REWARDS=[
+  {em:'🦷',title:'Zubný šampión!',sub:'Perfektné čistenie!'},
+  {em:'⭐',title:'Hviezda hygieny!',sub:'Úsmev žiari!'},
+  {em:'🏆',title:'Rekord čistoty!',sub:'Zuby ako perla!'},
+  {em:'🎉',title:'Fantastický výkon!',sub:'Tak ďalej každý deň!'},
+  {em:'💎',title:'Diamond úroveň!',sub:'Dentista by bol hrdý!'}
+];
+const LEVEL_TITLES=['Zubný Nováčik','Čistiaci Padawan','Zubný Rytier','Strážca Úsmevu','Šampión Hygieny','Elitný Zubár','Legenda Čistoty','Mystický Meister','Diamantový Šampión','Boh Čistoty'];
+const LEVEL_AVATARS=['🦷','🦷','⚡','🛡️','🏆','👑','💎','🌟','🔮','🌈'];
+const XP_PER_LEVEL=100; // base, scales
+
+// CARDS DATABASE
+const CARDS=[
+  {id:'zub1',name:'Zub-Man',rarity:'common',lvl:1,char:'🦷',desc:'Základný hrdina čistoty. Vždy pripravený na boj s plakom.',bg:'#2A7C6F',bg2:'#1a5c51',power:30,speed:40,stats:{sila:3,rýchlosť:4}},
+  {id:'zub2',name:'Zub-Girl',rarity:'common',lvl:1,char:'💫',desc:'Rýchla ako blesk, čistí s eleganciou a precíznosťou.',bg:'#5B4B8A',bg2:'#3d3160',power:35,speed:55,stats:{sila:3,rýchlosť:6}},
+  {id:'flash',name:'Flash Kefka',rarity:'rare',lvl:5,char:'⚡',desc:'Superrýchla kefka. Zvyšuje XP za rýchle čistenie.',bg:'#C4962A',bg2:'#8a671d',power:55,speed:80,stats:{sila:5,rýchlosť:8}},
+  {id:'shield',name:'Zubný Rytier',rarity:'rare',lvl:8,char:'🛡️',desc:'Ochranný rytier vašich zubov. Silná obrana proti kazu.',bg:'#2563A8',bg2:'#1a4578',power:70,speed:45,stats:{sila:8,rýchlosť:4}},
+  {id:'queen',name:'Kráľovná Peny',rarity:'epic',lvl:12,char:'👑',desc:'Vládkyňa penivej hygieny. Jej prísady sú legendárne.',bg:'#9333EA',bg2:'#6b21a8',power:85,speed:70,stats:{sila:9,rýchlosť:7}},
+  {id:'dragon',name:'Drak Mentu',rarity:'epic',lvl:18,char:'🐉',desc:'Dych sviežosti, oheň čistoty. Plak sa ho bojí.',bg:'#DC2626',bg2:'#991b1b',power:90,speed:75,stats:{sila:9,rýchlosť:8}},
+  {id:'ultra',name:'Ultra Zub-X',rarity:'legendary',lvl:25,char:'💎',desc:'Ultimátna forma. Zrodený z tisícok hodín čistenia.',bg:'#0F172A',bg2:'#1e293b',power:99,speed:99,stats:{sila:10,rýchlosť:10}},
+  {id:'cosmic',name:'Kozmický Lúč',rarity:'legendary',lvl:35,char:'🌟',desc:'Prišiel z hviezd, aby vyhubil plak navždy. Neporaziteľný.',bg:'#1a0533',bg2:'#3b1278',power:100,speed:95,stats:{sila:10,rýchlosť:10}},
+  {id:'spectre',name:'Spektre Mäty',rarity:'epic',lvl:20,char:'👻',desc:'Neviditeľný, ale cítiť ho všade. Svieži duch.',bg:'#0F766E',bg2:'#134e4a',power:80,speed:88,stats:{sila:8,rýchlosť:9}},
+  {id:'iron',name:'Železný Zub',rarity:'rare',lvl:10,char:'🤖',desc:'Robot-zub z budúcnosti. Čistí s presnosťou nanometrov.',bg:'#374151',bg2:'#1f2937',power:65,speed:60,stats:{sila:7,rýchlosť:6}},
+  {id:'rainbow',name:'Dúhový Bojovník',rarity:'epic',lvl:15,char:'🌈',desc:'Pestrofarbený hrdina. Každá farba = iná zóna.',bg:'#EC4899',bg2:'#9d174d',power:78,speed:82,stats:{sila:8,rýchlosť:8}},
+  {id:'thunder',name:'Hromový Zub',rarity:'legendary',lvl:30,char:'⚡',desc:'Blesk a hrom, plak je preč. Najrýchlejší v galaxii.',bg:'#1D4ED8',bg2:'#1e3a8a',power:95,speed:100,stats:{sila:9,rýchlosť:10}},
+];
+
+const RARITY_COLORS={common:{bg:'#6B7280',text:'#fff',label:'Common'},rare:{bg:'#3B82F6',text:'#fff',label:'Rare'},epic:{bg:'#9333EA',text:'#fff',label:'Epic'},legendary:{bg:'#F59E0B',text:'#fff',label:'Legendary'}};
+
+const ACHIEVEMENTS=[
+  {id:'first',name:'Prvé čistenie',desc:'Vyčisti zuby prvýkrát',icon:'🦷',req:1,type:'brush',xp:50,pts:10},
+  {id:'week7',name:'Železná séria',desc:'7 dní v sérii',icon:'🔥',req:7,type:'streak',xp:200,pts:50},
+  {id:'brush30',name:'Mesačný šampión',desc:'30 čistení celkom',icon:'🏆',req:30,type:'brush_total',xp:300,pts:75},
+  {id:'floss10',name:'Medzizubný hrdina',desc:'10× medzizubná kefka',icon:'🪥',req:10,type:'floss_total',xp:150,pts:30},
+  {id:'deep5',name:'Deep cleaner',desc:'5× deep clean',icon:'💎',req:5,type:'deep',xp:200,pts:40},
+  {id:'streak30',name:'Mesačná séria',desc:'30 dní v sérii',icon:'⚡',req:30,type:'streak',xp:500,pts:100},
+  {id:'pts500',name:'Body šampión',desc:'Nazbieraj 500 bodov',icon:'★',req:500,type:'points',xp:250,pts:0},
+  {id:'brush100',name:'Centurion',desc:'100 čistení celkom',icon:'👑',req:100,type:'brush_total',xp:1000,pts:200},
+  {id:'floss30',name:'Medzizubná legenda',desc:'30× medzizubná kefka',icon:'🌟',req:30,type:'floss_total',xp:400,pts:80},
+  {id:'lvl10',name:'Desiata úroveň',desc:'Dosiahni úroveň 10',icon:'🔮',req:10,type:'level',xp:0,pts:100},
+];
+
+const JOURNAL_EMOJIS=['😊','😬','🩸','😣','🦷','💊','🌡️','😴','🍎','☕'];
+
+const WEEK_CHALLENGES=[
+  {title:'Vyčisti 5× tento týždeň',req:5,type:'weekly_brush',xp:200,pts:50},
+  {title:'3× deep clean tento týždeň',req:3,type:'weekly_deep',xp:300,pts:75},
+  {title:'Medzizubná kefka 5× tento týždeň',req:5,type:'weekly_floss',xp:250,pts:60},
+  {title:'7 dní v sérii — finálny push',req:7,type:'streak',xp:400,pts:100},
+];
+
+// ═══════════ STATE ═══════════
+let st={points:0,xp:0,level:1,streak:0,fstreak:0,deepCount:0,brushHistory:{},flossHistory:{},journal:[],achDone:[],settings:{morningOn:true,morningTime:'06:30',eveningOn:true,eveningTime:'21:00',flossOn:true,flossTime:'20:30',dentistDate:'',sound:true,tips:true,vib:true},weekChallIdx:0,seasonXP:0,cardFilter:'all'};
+let timer=null,running=false,modeIdx=1,remaining=120;
+let calYear,calMonth;
+let notifTimers=[];
+let audioCtx=null;
+let selJournalEmojis=[];
+
+const $=id=>document.getElementById(id);
+const todayKey=()=>new Date().toISOString().split('T')[0];
+const CIRC=2*Math.PI*65;
+const MONTH_NAMES=['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
+const DAY_SHORT=['Po','Ut','St','Št','Pi','So','Ne'];
+
+function loadData(){try{const d=localStorage.getItem('dental_pro_v3');if(d)Object.assign(st,JSON.parse(d));}catch(e){}}
+function saveData(){try{localStorage.setItem('dental_pro_v3',JSON.stringify(st));}catch(e){}}
+
+// ═══════════ INIT ═══════════
+loadData();
+const now=new Date(); calYear=now.getFullYear(); calMonth=now.getMonth();
+modeIdx=1; remaining=120;
+updateTimerDisplay();
+renderZoneDots();
+renderPips();
+updateAllStats();
+renderCards();
+renderAchievements();
+renderWeeklyReport();
+renderHeatmap();
+renderCal();
+updateHistStats();
+updateFlossUI();
+updateXPBar();
+renderJournal();
+renderJournalEmojis();
+showTip();
+loadSettingsUI();
+scheduleNotifs();
+renderChallenge();
+$('je-date').textContent=new Date().toLocaleDateString('sk-SK',{weekday:'long',day:'numeric',month:'long'});
+
+// ═══════════ PAGES ═══════════
+function showPg(name,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  $('pg-'+name).classList.add('on');
+  if(btn)btn.classList.add('on');
+  if(name==='cards'){renderCards();$('cards-dot').style.display='none';}
+  if(name==='history'){renderHeatmap();renderCal();updateHistStats();}
+  if(name==='ach'){renderAchievements();renderChallenge();}
+  if(name==='more'){updateFlossUI();renderJournal();renderWeeklyReport();loadSettingsUI();}
+}
+
+// ═══════════ XP / LEVELS ═══════════
+function xpForLevel(lvl){return Math.floor(XP_PER_LEVEL*Math.pow(1.15,lvl-1));}
+function totalXPForLevel(lvl){let t=0;for(let i=1;i<lvl;i++)t+=xpForLevel(i);return t;}
+function levelFromXP(xp){let l=1,t=0;while(t+xpForLevel(l)<=xp){t+=xpForLevel(l);l++;}return l;}
+function xpInCurrentLevel(xp){let l=levelFromXP(xp),t=totalXPForLevel(l);return xp-t;}
+function xpNeededForCurrentLevel(xp){return xpForLevel(levelFromXP(xp));}
+
+function updateXPBar(){
+  const lvl=levelFromXP(st.xp);
+  const cur=xpInCurrentLevel(st.xp);
+  const need=xpNeededForCurrentLevel(st.xp);
+  const pct=Math.round((cur/need)*100);
+  const titleIdx=Math.min(LEVEL_TITLES.length-1,lvl-1);
+  $('xp-fill').style.width=pct+'%';
+  $('xp-level-lbl').textContent='Úroveň '+lvl+' · '+LEVEL_TITLES[titleIdx];
+  $('xp-next-lbl').textContent=cur+' / '+need+' XP';
+  $('hdr-xp').textContent=st.xp+' XP';
+  $('hdr-pts').textContent=st.points;
+  $('profile-lvl').textContent=lvl;
+  $('profile-name').textContent=LEVEL_TITLES[titleIdx];
+  $('profile-title').textContent='Úroveň '+lvl;
+  $('profile-avatar').textContent=LEVEL_AVATARS[Math.min(LEVEL_AVATARS.length-1,lvl-1)];
+  const sLvl=Math.floor(st.seasonXP/150)+1;
+  const sPct=((st.seasonXP%150)/150)*100;
+  $('season-fill').style.width=Math.round(sPct)+'%';
+  $('season-lvl-txt').textContent='Sezónna úroveň '+sLvl;
+}
+
+function gainXP(amount){
+  const oldLvl=levelFromXP(st.xp);
+  st.xp+=amount;
+  st.seasonXP+=amount;
+  const newLvl=levelFromXP(st.xp);
+  updateXPBar();
+  showXPPopup('+'+amount+' XP');
+  if(newLvl>oldLvl){
+    st.level=newLvl;
+    setTimeout(()=>showLevelUp(newLvl),600);
+  }
+}
+
+function showXPPopup(txt){
+  const p=$('xp-popup');
+  p.textContent=txt;
+  p.classList.add('show');
+  setTimeout(()=>p.classList.remove('show'),1400);
+}
+
+function showLevelUp(lvl){
+  const titleIdx=Math.min(LEVEL_TITLES.length-1,lvl-1);
+  $('lvlup-num').textContent=lvl;
+  $('lvlup-title-txt').textContent=LEVEL_TITLES[titleIdx];
+  const unlockedCard=CARDS.find(c=>c.lvl===lvl);
+  if(unlockedCard){
+    $('lvlup-reward-txt').textContent='Nová kartička odomknutá: '+unlockedCard.name+' 🎴';
+    $('lvlup-card-preview').innerHTML=renderCardHTML(unlockedCard,false,true);
+    $('cards-dot').style.display='block';
+  } else {
+    $('lvlup-reward-txt').textContent='Skvelá práca, pokračuj!';
+    $('lvlup-card-preview').innerHTML='';
+  }
+  $('lvlup').classList.add('show');
+  playSound(523,0.2); setTimeout(()=>playSound(659,0.2),200); setTimeout(()=>playSound(784,0.3),400);
+}
+function closeLvlUp(){$('lvlup').classList.remove('show');}
+
+// ═══════════ MODE ═══════════
+function setMode(i){
+  if(running)return;
+  modeIdx=i;
+  [0,1,2].forEach(j=>$('mp'+j).classList.toggle('on',j===i));
+  remaining=MODES[i].secs;
+  updateTimerDisplay();
+  renderZoneDots();
+}
+
+// ═══════════ TIMER ═══════════
+function updateTimerDisplay(){
+  const m=Math.floor(remaining/60),s=remaining%60;
+  $('rt-time').textContent=m+':'+String(s).padStart(2,'0');
+  $('rt-lbl').textContent=MODES[modeIdx].label;
+  const frac=remaining/MODES[modeIdx].secs;
+  $('rp').style.strokeDashoffset=String(CIRC*frac);
+  $('rp').style.stroke=frac<0.25?'#C0443B':frac<0.5?'#C4962A':'#2A7C6F';
+}
+
+function renderZoneDots(){
+  const z=MODES[modeIdx].zones;
+  const elapsed=MODES[modeIdx].secs-remaining;
+  const spz=MODES[modeIdx].secs/z.length;
+  const zi=Math.min(z.length-1,Math.floor(elapsed/spz));
+  $('zdots').innerHTML=z.map((_,i)=>`<div class="zd${i<zi?' done':i===zi&&running?' on':''}"></div>`).join('');
+  if(running)$('zlabel').textContent='⮕ '+z[zi];
+}
+
+function animFace(on){
+  $('fbrush').setAttribute('opacity',on?'1':'0');
+  if(on){
+    let x=50,d=1;
+    $('fbrush')._a=setInterval(()=>{x+=d*2;if(x>54||x<46)d*=-1;$('fbrush').setAttribute('transform','translate('+(x-50)+',0)');},80);
+    $('fmouth').setAttribute('d','M 27 55 Q 41 59 55 55');
+  } else {
+    clearInterval($('fbrush')._a);
+    $('fbrush').removeAttribute('transform');
+    $('fmouth').setAttribute('d','M 27 52 Q 41 62 55 52');
+  }
+}
+
+function setSBars(on){document.querySelectorAll('.sb').forEach(b=>on?b.classList.add('p'):b.classList.remove('p'));}
+
+function vibrate(ms){if(st.settings.vib&&navigator.vibrate)navigator.vibrate(ms);}
+
+function playSound(freq=880,dur=0.12){
+  if(!st.settings.sound)return;
+  try{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.frequency.value=freq;o.type='sine';
+    g.gain.setValueAtTime(0.25,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+    o.start();o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+
+function handleMain(){
+  if(!running){
+    running=true;
+    $('main-btn').textContent='Pauza';
+    $('rst-btn').style.display='';
+    $('reward-card').classList.remove('show');
+    $('ring-wrap').classList.add('pulsing');
+    animFace(true);setSBars(true);
+    playSound(660,0.12);vibrate(50);
+    timer=setInterval(()=>{
+      remaining--;
+      updateTimerDisplay();
+      renderZoneDots();
+      const spz=MODES[modeIdx].secs/MODES[modeIdx].zones.length;
+      if(remaining>0&&(MODES[modeIdx].secs-remaining)%Math.round(spz)===0){
+        playSound(880,0.09);vibrate(30);
+      }
+      if(remaining<=0){
+        clearInterval(timer);running=false;
+        $('ring-wrap').classList.remove('pulsing');
+        animFace(false);setSBars(false);
+        finishSession();
+      }
+    },1000);
+  } else {
+    running=false;
+    $('main-btn').textContent='Pokračovať';
+    clearInterval(timer);
+    $('ring-wrap').classList.remove('pulsing');
+    animFace(false);setSBars(false);
+  }
+}
+
+function handleReset(){
+  clearInterval(timer);running=false;remaining=MODES[modeIdx].secs;
+  $('main-btn').textContent='Začať';$('main-btn').disabled=false;
+  $('rst-btn').style.display='none';
+  $('reward-card').classList.remove('show');
+  $('zlabel').textContent='Stlač Začať';
+  $('ring-wrap').classList.remove('pulsing');
+  animFace(false);setSBars(false);
+  updateTimerDisplay();renderZoneDots();
+}
+
+// pending session data — saved after scan completes
+let pendingSession = null;
+
+function finishSession(){
+  const mode = MODES[modeIdx];
+  pendingSession = { xpGain: mode.xp, ptsGain: mode.pts, modeIdx };
+  $('main-btn').textContent = 'Hotovo!';
+  $('main-btn').disabled = true;
+  playSound(1047,0.25); setTimeout(()=>playSound(1319,0.25),200); setTimeout(()=>playSound(1568,0.35),400);
+  vibrate([50,50,100]);
+  // open scan overlay after short delay
+  setTimeout(openScan, 700);
+}
+
+function commitSession(scanScore){
+  if(!pendingSession) return;
+  const {xpGain, ptsGain, modeIdx: mi} = pendingSession;
+  pendingSession = null;
+  // bonus XP for high scan score
+  const bonus = scanScore >= 8 ? 20 : scanScore >= 6 ? 10 : 0;
+  st.points += ptsGain;
+  const key = todayKey();
+  if(!st.brushHistory[key]) st.brushHistory[key] = {count:0,pts:0,modes:[],scanScores:[]};
+  st.brushHistory[key].count++;
+  st.brushHistory[key].pts += ptsGain;
+  st.brushHistory[key].modes.push(mi);
+  if(st.brushHistory[key].scanScores) st.brushHistory[key].scanScores.push(scanScore);
+  if(mi===2) st.deepCount = (st.deepCount||0)+1;
+  calcStreak();
+  gainXP(xpGain + bonus);
+  saveData();
+  updateAllStats();
+  renderPips();
+  checkAchievements();
+  updateChallenge();
+  const r = REWARDS[Math.floor(Math.random()*REWARDS.length)];
+  $('r-em').textContent = r.em;
+  $('r-title').textContent = r.title;
+  $('r-sub').textContent = r.sub;
+  $('r-xp').textContent = '+' + (xpGain+bonus) + ' XP' + (bonus>0?' (bonus za čistotu!)':'');
+  $('r-pts').textContent = '+' + ptsGain + ' ★';
+  $('reward-card').classList.add('show');
+}
+
+// ═══════════ SCAN / CAMERA ═══════════
+let cameraStream = null;
+let capturedBase64 = null;
+let facingMode = 'user';
+
+function openScan(){
+  $('scan-overlay').classList.add('show');
+  showScanState('camera');
+  startCamera();
+}
+
+function showScanState(s){
+  ['camera','preview','analyzing','result','error'].forEach(n=>{
+    const el = $('scan-'+n+'-state');
+    if(el) el.style.display = n===s ? 'flex' : 'none';
+  });
+}
+
+async function startCamera(){
+  stopCamera();
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode, width:{ideal:1280}, height:{ideal:720} },
+      audio: false
+    });
+    const v = $('camera-video');
+    v.srcObject = cameraStream;
+    await v.play();
+  } catch(e){
+    // camera not available — show file upload fallback
+    showScanState('camera');
+    $('camera-area').innerHTML = `
+      <div class="upload-area" style="background:#111">
+        <div class="upload-icon">📁</div>
+        <div class="upload-title">Kamera nedostupná</div>
+        <div class="upload-sub">Nahraj fotku z galérie</div>
+        <button class="upload-btn" onclick="openFileUpload()">Vybrať fotku</button>
+      </div>`;
+  }
+}
+
+function stopCamera(){
+  if(cameraStream){ cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null; }
+}
+
+function switchCamera(){
+  facingMode = facingMode==='user' ? 'environment' : 'user';
+  startCamera();
+}
+
+function openFileUpload(){ $('file-input').click(); }
+
+function handleFileUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    capturedBase64 = ev.target.result.split(',')[1];
+    $('preview-img').src = ev.target.result;
+    stopCamera();
+    showScanState('preview');
+  };
+  reader.readAsDataURL(file);
+}
+
+function takePhoto(){
+  const v = $('camera-video');
+  const c = $('photo-canvas');
+  c.width = v.videoWidth || 640;
+  c.height = v.videoHeight || 480;
+  c.getContext('2d').drawImage(v,0,0);
+  const dataURL = c.toDataURL('image/jpeg', 0.85);
+  capturedBase64 = dataURL.split(',')[1];
+  $('preview-img').src = dataURL;
+  stopCamera();
+  showScanState('preview');
+  vibrate(40);
+}
+
+function retakePhoto(){
+  capturedBase64 = null;
+  showScanState('camera');
+  startCamera();
+}
+
+async function analyzePhoto(){
+  if(!capturedBase64){ showScanError('Žiadna fotka.'); return; }
+  showScanState('analyzing');
+  // animate steps
+  const steps = ['ai-s1','ai-s2','ai-s3','ai-s4'];
+  steps.forEach((id,i)=>{ setTimeout(()=>{ $(id).classList.add('active'); if(i>0) $(steps[i-1]).classList.remove('active'), $(steps[i-1]).classList.add('done'); }, i*900); });
+
+  try {
+    // Volá náš Vercel proxy — API kľúč je bezpečne na serveri
+    const resp = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: capturedBase64 })
+    });
+
+    const result = await resp.json();
+
+    if(!resp.ok || result.error){
+      throw new Error(result.error || 'Chyba servera');
+    }
+
+    if(result.score === 0 || !result.score){
+      showScanError('Na fotke nie sú viditeľné zuby. Skús znova — ukáž zuby a priblíž sa.');
+      return;
+    }
+    showResult(result);
+
+  } catch(err){
+    showScanError('AI analýza zlyhala: ' + (err.message||'neznáma chyba') + '. Skús znova alebo preskočiť.');
+  }
+}
+
+function showResult(r){
+  // complete last step animation
+  ['ai-s1','ai-s2','ai-s3','ai-s4'].forEach(id=>{ $(id).classList.remove('active'); $(id).classList.add('done'); });
+
+  setTimeout(()=>{
+    showScanState('result');
+    $('result-photo').src = 'data:image/jpeg;base64,' + capturedBase64;
+
+    const score = Math.min(10, Math.max(1, Math.round(r.score)));
+    const scoreColor = score>=8?'#2A7C6F':score>=6?'#C4962A':'#C0443B';
+
+    // animate score ring
+    const arc = $('score-arc');
+    const circ = 2*Math.PI*46;
+    arc.style.stroke = scoreColor;
+    setTimeout(()=>{ arc.style.strokeDashoffset = String(circ - (circ*(score/10))); }, 100);
+
+    $('score-num').textContent = score;
+    $('score-num').style.color = scoreColor;
+    $('verdict-title').textContent = r.verdict || '';
+    $('verdict-sub').textContent = r.summary || '';
+
+    // tags
+    const tagColors = ['bt','bg','bp'];
+    const tags = Array.isArray(r.tags) ? r.tags : [];
+    $('result-tags').innerHTML = tags.map((t,i)=>`<span class="badge ${tagColors[i%tagColors.length]}">${t}</span>`).join('');
+
+    $('rd-pos').textContent = r.positives || '—';
+    $('rd-neg').textContent = r.improvements || '—';
+    $('rd-tip').textContent = r.tip || '—';
+
+    // store score for commit
+    $('scan-overlay').dataset.score = score;
+  }, 400);
+}
+
+function showScanError(msg){
+  $('scan-error-msg').textContent = msg;
+  showScanState('error');
+}
+
+function finishWithScan(){
+  const score = parseInt($('scan-overlay').dataset.score || '5');
+  $('scan-overlay').classList.remove('show');
+  stopCamera();
+  commitSession(score);
+}
+
+function skipScan(){
+  $('scan-overlay').classList.remove('show');
+  stopCamera();
+  commitSession(5); // neutral score if skipped
+}
+
+function calcStreak(){
+  let s=0,d=new Date();
+  for(let i=0;i<365;i++){
+    const k=d.toISOString().split('T')[0];
+    if(st.brushHistory[k])s++;
+    else if(i>0)break;
+    d.setDate(d.getDate()-1);
+  }
+  st.streak=s;
+  let fs=0;d=new Date();
+  for(let i=0;i<365;i++){
+    const k=d.toISOString().split('T')[0];
+    if(st.flossHistory[k])fs++;
+    else if(i>0)break;
+    d.setDate(d.getDate()-1);
+  }
+  st.fstreak=fs;
+}
+
+function updateAllStats(){
+  $('hdr-pts').textContent=st.points;
+  $('st-pts').textContent=st.points;
+  $('st-str').textContent=st.streak;
+  $('st-fstr').textContent=st.fstreak;
+  let wk=0;
+  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);if(st.brushHistory[d.toISOString().split('T')[0]])wk++;}
+  $('st-wk').textContent=wk;
+  const tot=Object.keys(st.brushHistory).length;
+  $('profile-total').textContent=tot;
+}
+
+function renderPips(){
+  let h='';for(let i=0;i<7;i++)h+=`<div class="pip${i<Math.min(st.streak,7)?' lit':''}"></div>`;
+  $('pips').innerHTML=h;
+}
+
+function showTip(){
+  if(!st.settings.tips){$('tip-card').style.display='none';return;}
+  $('tip-tx').textContent=TIPS[new Date().getDay()%TIPS.length];
+  $('tip-card').style.display='block';
+}
+
+// ═══════════ CARDS ═══════════
+function userLevel(){return levelFromXP(st.xp);}
+
+function renderCardHTML(card,mini=false,preview=false){
+  const rc=RARITY_COLORS[card.rarity];
+  const locked=userLevel()<card.lvl;
+  const sz=mini?'100%':preview?'100%':'100%';
+  return `<div class="tcard${locked?' locked':''}" onclick="${locked?'':'openCard(\''+card.id+'\')'}" style="background:${card.bg};border-color:${locked?'transparent':rc.bg}">
+    <div class="tcard-bg" style="background:linear-gradient(160deg,${card.bg},${card.bg2})"></div>
+    <div class="tcard-shine"></div>
+    <div class="tcard-rarity" style="background:${rc.bg};color:${rc.text}">${rc.label}</div>
+    <div class="tcard-lvl-req">Lv.${card.lvl}</div>
+    <div class="tcard-char">${card.char}</div>
+    <div class="tcard-name">${card.name}</div>
+  </div>`;
+}
+
+function filterCards(f,btn){
+  st.cardFilter=f;
+  document.querySelectorAll('.cf').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCards();
+}
+
+function renderCards(){
+  const f=st.cardFilter;
+  const lvl=userLevel();
+  const filtered=CARDS.filter(c=>{
+    if(f==='unlocked')return lvl>=c.lvl;
+    if(f==='all')return true;
+    return c.rarity===f;
+  });
+  $('cards-grid').innerHTML=filtered.map(c=>renderCardHTML(c)).join('');
+}
+
+function openCard(id){
+  const card=CARDS.find(c=>c.id===id);
+  if(!card)return;
+  const rc=RARITY_COLORS[card.rarity];
+  $('cd-card-big').innerHTML=`<div style="position:absolute;inset:0;background:linear-gradient(160deg,${card.bg},${card.bg2});border-radius:15px"></div><div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);border-radius:15px"></div><div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:52px">${card.char}</div><div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);text-transform:uppercase">${card.name}</div>`;
+  $('cd-card-big').style.borderColor=rc.bg;
+  $('cd-name').textContent=card.name;
+  $('cd-rarity-row').innerHTML=`<span style="padding:3px 10px;border-radius:20px;background:${rc.bg};color:${rc.text};font-size:11px;font-weight:700;font-family:'Space Grotesk',sans-serif">${rc.label}</span><span style="font-size:12px;color:var(--ink-3)">Lv. ${card.lvl}+</span>`;
+  $('cd-desc').textContent=card.desc;
+  $('cd-stats').innerHTML=`<div class="cd-stat"><div class="sv">${card.stats.sila*10}/10</div><div class="sl">Sila čistenia</div></div><div class="cd-stat"><div class="sv">${card.stats.rýchlosť*10}/10</div><div class="sl">Rýchlosť</div></div>`;
+  $('card-detail').classList.add('show');
+}
+function closeCardDetail(e){if(!e||e.target===$('card-detail'))$('card-detail').classList.remove('show');}
+
+// ═══════════ ACHIEVEMENTS ═══════════
+function getProgress(ach){
+  const tot=Object.keys(st.brushHistory).length;
+  const ftot=Object.keys(st.flossHistory).length;
+  switch(ach.type){
+    case 'brush': return Math.min(tot,ach.req);
+    case 'brush_total': return Math.min(tot,ach.req);
+    case 'streak': return Math.min(st.streak,ach.req);
+    case 'floss_total': return Math.min(ftot,ach.req);
+    case 'deep': return Math.min(st.deepCount||0,ach.req);
+    case 'points': return Math.min(st.points,ach.req);
+    case 'level': return Math.min(userLevel(),ach.req);
+    default: return 0;
+  }
+}
+
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(st.achDone.includes(a.id))return;
+    const prog=getProgress(a);
+    if(prog>=a.req){
+      st.achDone.push(a.id);
+      gainXP(a.xp);
+      if(a.pts)st.points+=a.pts;
+      showXPPopup('🏆 Odznak: +'+a.xp+' XP');
+    }
+  });
+  saveData();
+}
+
+function renderAchievements(){
+  const active=ACHIEVEMENTS.filter(a=>!st.achDone.includes(a.id));
+  const done=ACHIEVEMENTS.filter(a=>st.achDone.includes(a.id));
+  $('ach-active').innerHTML=active.map(a=>{
+    const prog=getProgress(a);
+    const pct=Math.round((prog/a.req)*100);
+    return `<div class="ach-item">
+      <div class="ach-icon" style="background:var(--cream-2)">${a.icon}</div>
+      <div class="ach-info">
+        <div class="ach-name">${a.name}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <div class="ach-prog-wrap"><div class="ach-prog" style="width:${pct}%"></div></div>
+      </div>
+      <div class="ach-reward">+${a.xp}XP</div>
+    </div>`;
+  }).join('');
+  $('ach-done').innerHTML=done.map(a=>`<div class="ach-item done">
+    <div class="ach-icon" style="background:var(--gold-2)">${a.icon}</div>
+    <div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div>
+    <div class="ach-reward" style="color:var(--teal)">✓ Splnené</div>
+  </div>`).join('');
+}
+
+// ═══════════ WEEKLY CHALLENGE ═══════════
+function getChallengeProgress(ch){
+  const today=new Date();
+  const mon=new Date(today);
+  mon.setDate(today.getDate()-today.getDay()+1);
+  if(ch.type==='weekly_brush'){
+    let c=0;for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);if(st.brushHistory[d.toISOString().split('T')[0]])c++;}
+    return c;
+  }
+  if(ch.type==='weekly_floss'){
+    let c=0;for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);if(st.flossHistory[d.toISOString().split('T')[0]])c++;}
+    return c;
+  }
+  if(ch.type==='weekly_deep'){return Math.min(st.deepCount||0,ch.req);}
+  if(ch.type==='streak'){return st.streak;}
+  return 0;
+}
+
+function updateChallenge(){
+  const ch=WEEK_CHALLENGES[st.weekChallIdx%WEEK_CHALLENGES.length];
+  const prog=getChallengeProgress(ch);
+  if(prog>=ch.req&&!st['ch_done_'+st.weekChallIdx]){
+    st['ch_done_'+st.weekChallIdx]=true;
+    gainXP(ch.xp);st.points+=ch.pts;
+    saveData();
+  }
+}
+
+function renderChallenge(){
+  const ch=WEEK_CHALLENGES[st.weekChallIdx%WEEK_CHALLENGES.length];
+  const prog=getChallengeProgress(ch);
+  const pct=Math.round((prog/ch.req)*100);
+  $('ch-title').textContent=ch.title;
+  $('ch-fill').style.width=Math.min(100,pct)+'%';
+  $('ch-prog-txt').textContent=prog+' / '+ch.req;
+  $('ch-reward').textContent='+'+ch.xp+' XP ★'+ch.pts;
+}
+
+// ═══════════ FLOSS ═══════════
+function updateFlossUI(){
+  const key=todayKey();const done=!!st.flossHistory[key];
+  $('floss-sub').textContent=done?'Dnes splnené 🎉':'Ešte neurobená · Pripomienka o '+(st.settings.flossTime||'20:30');
+  $('floss-streak-b').textContent='Séria: '+st.fstreak+' dní';
+  $('floss-total-b').textContent='Celkom: '+Object.keys(st.flossHistory).length+'×';
+  // update hero icon/color based on status
+  const hero=$('floss-hero-icon');
+  if(hero) hero.textContent=done?'✅':'🪥';
+}
+// markFloss je volaná len programovo (cez AI scan / notifikáciu), nie manuálne
+function markFloss(){
+  const key=todayKey();if(st.flossHistory[key])return;
+  st.flossHistory[key]=true;st.points+=5;
+  calcStreak();gainXP(20);saveData();updateAllStats();updateFlossUI();
+  playSound(880,0.12);setTimeout(()=>playSound(1047,0.18),150);
+  checkAchievements();
+}
+function toggleIC(id){$(id).classList.toggle('open');}
+
+// ═══════════ HISTORY ═══════════
+function renderHeatmap(){
+  let html='';const today=new Date();
+  for(let w=25;w>=0;w--){
+    for(let d=0;d<7;d++){
+      const dt=new Date(today);dt.setDate(today.getDate()-(w*7+d));
+      const k=dt.toISOString().split('T')[0];
+      const has=st.brushHistory[k];
+      const cnt=has?has.count:0;
+      const cls=cnt===0?'':cnt===1?'l1':cnt===2?'l2':cnt===3?'l3':'l4';
+      html+=`<div class="hm-cell ${cls}" title="${k}"></div>`;
+    }
+  }
+  $('hm-grid').innerHTML=html;
+}
+
+function renderCal(){
+  $('cal-month').textContent=MONTH_NAMES[calMonth]+' '+calYear;
+  $('cal-header').innerHTML=DAY_SHORT.map(n=>`<div class="cdn">${n}</div>`).join('');
+  const first=new Date(calYear,calMonth,1);
+  let dow=first.getDay();dow=(dow===0)?6:dow-1;
+  const dim=new Date(calYear,calMonth+1,0).getDate();
+  const today=todayKey();
+  let html='';
+  for(let i=0;i<dow;i++)html+='<div class="cc empty"></div>';
+  for(let d=1;d<=dim;d++){
+    const k=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    let cls='cc';
+    if(st.brushHistory[k])cls+=' b';
+    if(st.brushHistory[k]&&st.flossHistory[k])cls+=' f';
+    if(k===today)cls+=' today';
+    html+=`<div class="${cls}">${d}</div>`;
+  }
+  $('cal-grid').innerHTML=html;
+}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();updateHistStats();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();updateHistStats();}
+
+function updateHistStats(){
+  const tot=Object.keys(st.brushHistory).length;
+  $('h-total').textContent=tot;
+  let mc=0;for(let d=1;d<=31;d++){const k=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(st.brushHistory[k])mc++;}
+  $('h-month').textContent=mc;
+  const ft=Object.keys(st.flossHistory).length;
+  $('h-frate').textContent=tot>0?Math.round((ft/tot)*100)+'%':'0%';
+}
+
+// ═══════════ WEEKLY REPORT ═══════════
+function renderWeeklyReport(){
+  const today=new Date();
+  const days=['Po','Ut','St','Št','Pi','So','Ne'];
+  let html='';let cnt=0;
+  for(let i=6;i>=0;i--){
+    const d=new Date(today);d.setDate(today.getDate()-i);
+    const k=d.toISOString().split('T')[0];
+    const dow=d.getDay();const di=(dow===0)?6:dow-1;
+    const brushed=!!st.brushHistory[k];
+    const flossed=!!st.flossHistory[k];
+    const isToday=i===0;
+    if(brushed)cnt++;
+    const dotCls='wr-day-dot'+(brushed&&flossed?' done floss':brushed?' done':'')+(isToday?' today':'');
+    html+=`<div class="wr-day"><div class="wr-day-lbl">${days[di]}</div><div class="${dotCls}">${brushed?(flossed?'💜':'✓'):''}</div></div>`;
+  }
+  $('wr-week').innerHTML=html;
+  $('wr-summary').textContent=cnt+'/7 dní';
+}
+
+// ═══════════ JOURNAL ═══════════
+function renderJournalEmojis(){
+  $('je-icons').innerHTML=JOURNAL_EMOJIS.map(e=>`<button class="je-icon-btn${selJournalEmojis.includes(e)?' sel':''}" onclick="toggleEmoji('${e}')">${e}</button>`).join('');
+}
+function toggleEmoji(e){
+  const i=selJournalEmojis.indexOf(e);
+  if(i>-1)selJournalEmojis.splice(i,1);else selJournalEmojis.push(e);
+  renderJournalEmojis();
+}
+function saveJournalEntry(){
+  const txt=$('je-input').value.trim();
+  if(!txt&&selJournalEmojis.length===0)return;
+  if(!st.journal)st.journal=[];
+  st.journal.unshift({date:todayKey(),emojis:[...selJournalEmojis],text:txt,ts:Date.now()});
+  if(st.journal.length>50)st.journal=st.journal.slice(0,50);
+  $('je-input').value='';selJournalEmojis=[];
+  renderJournalEmojis();renderJournal();saveData();
+}
+function renderJournal(){
+  if(!st.journal||st.journal.length===0){$('je-list').innerHTML='<div style="font-size:12px;color:var(--ink-3);text-align:center;padding:12px 0">Zatiaľ žiadne záznamy</div>';return;}
+  $('je-list').innerHTML=st.journal.slice(0,8).map(e=>`<div class="je-item">
+    <div class="je-item-icons">${e.emojis.join('')||'📝'}</div>
+    <div class="je-item-info"><div class="date">${e.date}</div><div class="text">${e.text||'(bez textu)'}</div></div>
+  </div>`).join('');
+}
+
+// ═══════════ SETTINGS ═══════════
+function loadSettingsUI(){
+  const s=st.settings;
+  $('t-morn').value=s.morningTime||'06:30';
+  $('t-eve').value=s.eveningTime||'21:00';
+  $('t-floss').value=s.flossTime||'20:30';
+  $('t-dentist').value=s.dentistDate||'';
+  $('tog-morn').checked=s.morningOn!==false;
+  $('tog-eve').checked=s.eveningOn!==false;
+  $('tog-floss').checked=s.flossOn!==false;
+  $('tog-sound').checked=s.sound!==false;
+  $('tog-tips').checked=s.tips!==false;
+  $('tog-vib').checked=s.vib!==false;
+  $('d-morn').textContent=s.morningTime||'06:30';
+  $('d-eve').textContent=s.eveningTime||'21:00';
+  $('d-floss').textContent=(s.flossTime||'20:30')+' · každý večer';
+  if(s.dentistDate)$('d-dentist').textContent='Najbližší: '+s.dentistDate;
+}
+function saveSettings(){
+  st.settings.morningTime=$('t-morn').value;
+  st.settings.eveningTime=$('t-eve').value;
+  st.settings.flossTime=$('t-floss').value;
+  st.settings.dentistDate=$('t-dentist').value;
+  st.settings.morningOn=$('tog-morn').checked;
+  st.settings.eveningOn=$('tog-eve').checked;
+  st.settings.flossOn=$('tog-floss').checked;
+  st.settings.sound=$('tog-sound').checked;
+  st.settings.tips=$('tog-tips').checked;
+  st.settings.vib=$('tog-vib').checked;
+  saveData();loadSettingsUI();showTip();scheduleNotifs();
+}
+
+// ═══════════ NOTIFICATIONS ═══════════
+function scheduleNotifs(){
+  notifTimers.forEach(t=>clearTimeout(t));notifTimers=[];
+  if(!('Notification' in window))return;
+  const s=st.settings;
+  const notifs=[];
+  if(s.morningOn!==false)notifs.push({time:s.morningTime||'06:30',title:'🌅 Dobré ráno!',body:'Čas na ranné čistenie zubov!'});
+  if(s.eveningOn!==false)notifs.push({time:s.eveningTime||'21:00',title:'🌙 Dobrý večer!',body:'Nezabudni na večerné čistenie!'});
+  if(s.flossOn!==false)notifs.push({time:s.flossTime||'20:30',title:'🪥 Medzizubná kefka',body:'Čas na medzizubnú — séria ťa čaká!'});
+  if(Notification.permission==='granted')notifs.forEach(n=>schedOne(n));
+  else if(Notification.permission!=='denied')Notification.requestPermission().then(p=>{if(p==='granted')notifs.forEach(n=>schedOne(n));});
+}
+function schedOne({time,title,body}){
+  const[h,m]=time.split(':').map(Number);
+  const now=new Date(),next=new Date();
+  next.setHours(h,m,0,0);if(next<=now)next.setDate(next.getDate()+1);
+  const t=setTimeout(()=>{new Notification(title,{body});schedOne({time,title,body});},next-now);
+  notifTimers.push(t);
+}
+
+function resetAll(){
+  if(!confirm('Naozaj vymazať všetky dáta?'))return;
+  const s=st.settings;
+  st={points:0,xp:0,level:1,streak:0,fstreak:0,deepCount:0,brushHistory:{},flossHistory:{},journal:[],achDone:[],settings:s,weekChallIdx:0,seasonXP:0,cardFilter:'all'};
+  saveData();handleReset();updateAllStats();updateXPBar();renderCards();renderAchievements();renderWeeklyReport();renderHeatmap();renderCal();updateHistStats();updateFlossUI();renderPips();renderJournal();showTip();
+}
+</script>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:300;padding:0 16px 16px">
+  <div style="background:#1C1917;border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,0.25)">
+    <img src="icons/icon-96.png" style="width:44px;height:44px;border-radius:10px;flex-shrink:0" alt="icon">
+    <div style="flex:1;min-width:0">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">Nainštalovať Dental Pro</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.6)">Pridaj na plochu pre rýchly prístup</div>
+    </div>
+    <button onclick="installPWA()" style="background:#2A7C6F;color:#fff;border:none;border-radius:10px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap">Inštalovať</button>
+    <button onclick="dismissBanner()" style="background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:18px;padding:4px;line-height:1">✕</button>
+  </div>
+</div>
+
+<!-- iOS INSTALL HINT (shows only on iOS Safari) -->
+<div id="ios-hint" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:300;padding:0 16px 16px">
+  <div style="background:#1C1917;border-radius:18px;padding:14px 16px;box-shadow:0 4px 24px rgba(0,0,0,0.25)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">Inštaluj na iPhone / iPad</div>
+      <button onclick="dismissIOS()" style="background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;line-height:1;padding:0">✕</button>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6">
+      1. Klikni na <b style="color:#fff">Zdieľať</b> tlačidlo (☐↑) v Safari<br>
+      2. Vyber <b style="color:#fff">"Pridať na plochu"</b><br>
+      3. Potvrď <b style="color:#fff">Pridať</b>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SERVICE WORKER ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      console.log('SW registered:', reg.scope);
+    }).catch(err => console.log('SW failed:', err));
+  });
+}
+
+// ── PWA INSTALL PROMPT ──
+let deferredPrompt = null;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!isInStandaloneMode && !localStorage.getItem('pwa_dismissed')) {
+    setTimeout(() => { document.getElementById('pwa-banner').style.display = 'block'; }, 2000);
+  }
+});
+
+if (isIOS && !isInStandaloneMode && !localStorage.getItem('ios_dismissed')) {
+  setTimeout(() => { document.getElementById('ios-hint').style.display = 'block'; }, 2500);
+}
+
+function installPWA() {
+  document.getElementById('pwa-banner').style.display = 'none';
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      deferredPrompt = null;
+      if (choice.outcome === 'accepted') console.log('PWA installed!');
+    });
+  }
+}
+
+function dismissBanner() {
+  document.getElementById('pwa-banner').style.display = 'none';
+  localStorage.setItem('pwa_dismissed', '1');
+}
+
+function dismissIOS() {
+  document.getElementById('ios-hint').style.display = 'none';
+  localStorage.setItem('ios_dismissed', '1');
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwa-banner').style.display = 'none';
+  console.log('App installed successfully');
+});
+</script>
+</body>
+</html>
